@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:layout_margin="10dp">
+
+    <TextView android:id="@+id/inst"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        android:text="Please Get ready with your Aadhaar card.
+Put QR code of card under the camera after pressing the registration button"
+        android:gravity="center"
+        android:textSize="16dip"/>
+
+    <TextView android:id="@+id/insth"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        android:text="कृपया अपने आधार कार्ड के साथ तैयार हो जाओ।
+ पंजीकरण बटन दबाए जाने के बाद कैमरे के नीचे कार्ड का क्यूआर कोड रखें "
+        android:gravity="center"
+        android:textSize="16dip"/>
+
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/btnRegister1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="24dp"
+        android:padding="12dp"
+        android:text="Start Registration"/>
+
+</LinearLayout>
