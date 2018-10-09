@@ -80,22 +80,34 @@
 
     <Button
         android:id="@+id/loc"
-        android:layout_width="200dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="12dp"
-        android:text="Fetch Current Location!" />
-
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/button_bg1"
+        android:text="Fetch Current Location!"
+        android:textColor="@color/whiteColor"
+        android:textStyle="bold" />
     <Button
         android:id="@+id/setloc"
-        android:layout_width="200dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="12dp"
-        android:text="Get my Garage Address!" />
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/button_bg1"
+        android:text="Get my Garage Address!"
+        android:textColor="@color/whiteColor"
+        android:textStyle="bold" />
+
     <Button
         android:id="@+id/sendLoc"
-        android:layout_width="200dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="12dp"
-        android:text="Set this as my Garage Address!" />
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/button_bg1"
+        android:text="Set this as my Garage Address!"
+        android:textColor="@color/whiteColor"
+        android:textStyle="bold" />
+
     </LinearLayout>
 </ScrollView>

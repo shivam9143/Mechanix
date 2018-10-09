@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.androidsolutions.shivam.mechanix">
+
     <!-- To auto-complete the email text field in the login form with the user's emails -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -10,9 +11,11 @@
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.READ_PROFILE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
+
     <application
+        android:name=".MyApplication"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/autoboys"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
@@ -24,11 +27,19 @@
         <activity
             android:name=".LoginActivity"
             android:label="@string/title_activity_login"
-            android:noHistory="true" />
+            android:noHistory="true"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
-            android:name=".SplashScreen"
-            android:label="MechaniX"
-            android:noHistory="true">
+            android:name=".SplashActivity"
+            android:label="AutoBoys"
+            android:noHistory="true"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity
+            android:name=".MainActivity1"
+            android:label="AutoBoys"
+            android:noHistory="true"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -38,16 +49,27 @@
         <activity
             android:name=".UserRegistration"
             android:label="Register"
-            android:noHistory="true" />
+            android:noHistory="true"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".FullscreenActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_fullscreen"
             android:theme="@style/FullscreenTheme" />
-        <activity android:name=".scanner" />
+        <activity android:name=".scanner"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".submit"
             android:label="@string/title_activity_submit"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Verification"
+            android:noHistory="true"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".RegisterWoutScan"
+            android:label="Register"
+            android:noHistory="true"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 </manifest>

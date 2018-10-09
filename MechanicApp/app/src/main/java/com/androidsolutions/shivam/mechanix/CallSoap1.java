@@ -15,12 +15,11 @@ import org.ksoap2.transport.HttpTransportSE;
 
 public class CallSoap1
 {
-    public final String SOAP_ACTION = "http://tempuri.org/UpdateLocation";
+    public final String SOAP_ACTION = "http://tempuri.org/EmployeeRegistration";
 
-    public  final String OPERATION_NAME = "UpdateLocation";
+    public  final String OPERATION_NAME = "EmployeeRegistration";
 
     public  final String WSDL_TARGET_NAMESPACE = "http://tempuri.org/";
-
     url u=new url();
     public  final String SOAP_ADDRESS = u.url;
     public CallSoap1()

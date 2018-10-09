@@ -38,7 +38,7 @@ public class scanner extends AppCompatActivity {
     private Barcode barcodeResult;
     private final String TAG = scanner.class.getSimpleName() ;
     private final int MY_PERMISSION_REQUEST_CAMERA = 1001;
-    Button bt;
+    Button bt,bt2;
 
 
 
@@ -53,6 +53,14 @@ public class scanner extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 scanBarcode();
+            }
+        });
+        bt2=findViewById(R.id.btnRegister2);
+        bt2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i=new Intent(scanner.this,RegisterWoutScan.class);
+                startActivity(i);
             }
         });
     }

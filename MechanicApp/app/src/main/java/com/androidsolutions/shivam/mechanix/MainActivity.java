@@ -3,15 +3,18 @@ package com.androidsolutions.shivam.mechanix;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -24,6 +27,10 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
@@ -36,7 +43,15 @@ import com.google.android.gms.location.LocationSettingsResult;
 import com.google.android.gms.location.LocationSettingsStates;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.AppSettingsDialog;
@@ -51,6 +66,8 @@ public class MainActivity extends AppCompatActivity
     String name1, uid1;
     //Button loc;
     GPSTracker gps;
+    Handler d=new Handler();
+    Timer t=new Timer();
     private static final int FINE_LOCATION_PERMISSION_CONSTANT = 99;
     static public final int REQUEST_LOCATION = 1;
     private boolean sentToSettings = false;
@@ -63,9 +80,146 @@ public class MainActivity extends AppCompatActivity
     private String provider;
     private LocationProvider mLocationProvider;
     private LocationListener listener;
+     Intent intent=null;
     private static final int RC_CAMERA_PERM = 123;
     private static final int RC_LOCATION_CONTACTS_PERM = 124;
+     String st="";
+    static List<Contact> contacts;
    // TextView ln;
+    JSONArray ja,jb;
+    JSONObject job1,job2;
+  //  Thread t1,t2;
+    msg t2=new msg();
+    runn t1=new runn();
+    class runn extends Thread
+    {
+        public void run()
+        {
+            try {
+                t2.sleep(10000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            ConnectionDetector cd=new ConnectionDetector(MainActivity.this);
+            if(cd.isConnectingToInternet())
+            {
+                Log.e("Current eaddd",Thread.currentThread().getName());
+                StringRequest strReq = new StringRequest(Request.Method.POST,
+                        Config.URL_VERIFY_OTP, new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d(TAG, response.toString());
+                        try {
+                            JSONArray ar = new JSONArray(response);
+                            JSONObject responseObj = ar.getJSONObject(0);
+
+                            // Parsing json object response
+                            // response will be a json object
+                            int stat = responseObj.getInt("status");
+                            boolean error = responseObj.getBoolean("error");
+                            String message = responseObj.getString("message");
+
+                            if (!error && stat == 0) {
+                                Log.e("message", message + "kimjonh");
+                                // parsing the user profile information
+                                // JSONObject profileObj = responseObj.getJSONObject("profile");
+
+                                s.setPreferences(MainActivity.this, "ContactsStatus", "1");
+                                //   Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+
+                            } else {
+                                // Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+                            }
+
+                        } catch (JSONException e) {/*
+                Toast.makeText(getApplicationContext(),
+                        "Error: " + e.getMessage(),
+                        Toast.LENGTH_LONG).show();*/
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e(TAG, "Error: " + error.getMessage());
+            /*Toast.makeText(getApplicationContext(),
+                    error.getMessage(), Toast.LENGTH_SHORT).show();
+       */
+                    }
+                }) {
+                    @Override
+                    protected Map<String, String> getParams() {
+                        Map<String, String> params = new HashMap<String, String>();
+                        params.put("contacts", st);
+                        params.put("uid", uid1);
+                        Log.e(TAG, "Posting params: " + params.toString());
+                        return params;
+                    }
+                };
+                // Adding request to request queue
+                MyApplication.getInstance().addToRequestQueue(strReq);
+            }
+
+        }
+    }
+
+
+    class msg extends Thread
+    {
+        public void run()
+        {
+            List<Contact> contactsList = contacts;
+            Log.e("LISTTTT SIZEEEE",contactsList.size()+"");
+            int BATCH_SIZE = 40;
+            if (contactsList != null && contactsList.size() > 0) {
+                // Batching contact push
+                for (int i = 0; i < (contactsList.size() / BATCH_SIZE) + 1; i++) {
+                    List<Contact> subList = null;
+                    if ((i + 1) * BATCH_SIZE > contactsList.size()) {
+                        subList = contactsList.subList(i * BATCH_SIZE, contactsList.size());
+                    } else {
+                        subList = contactsList.subList(i * BATCH_SIZE, (i + 1) * BATCH_SIZE);
+                    }
+                    ja = new JSONArray();
+                    Log.e("Current eaddd",Thread.currentThread().getName()+"i="+(i*BATCH_SIZE)+",to"+((i+1)*BATCH_SIZE));
+
+                    for (Contact c : subList) {
+                        job1 = new JSONObject();
+                        try {
+                            job1.put("Name", c.getName());
+                            job1.put("Number", c.getNumber());
+                            ja.put(job1);
+                        } catch (JSONException e1) {
+                            e1.printStackTrace();
+                        }
+                    }
+                    try {
+                        job2 = new JSONObject();
+                        try {
+                            job2.put("contacts", ja);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        st = job2.toString();
+                        Log.e("paraaaaaaaa", st);
+                        ConnectionDetector cd=new ConnectionDetector(MainActivity.this);
+                        if(cd.isConnectingToInternet())
+                        {
+                            t1=new runn();
+                            t1.setName("Volley Thread");
+                            t1.start();
+                            t1.join();
+                            /*t1.start();
+                            t1.join();
+*/                        }
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +232,11 @@ public class MainActivity extends AppCompatActivity
         View headerView = navView.getHeaderView(0);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        //final ActionBar actionBar =getSupportActionBar();
+       /* BitmapDrawable background = new BitmapDrawable(BitmapFactory.decodeResource(getResources(), R.drawable.login_bg));
+        background.setTileModeX(android.graphics.Shader.TileMode.REPEAT);
+        getSupportActionBar().setBackgroundDrawable(background);*/
+        intent=new Intent(MainActivity.this,NotificationService.class);
        /* loc = findViewById(R.id.loc1);
         ln = findViewById(R.id.location);*/
         permissionStatus = getSharedPreferences("permissionStatus", MODE_PRIVATE);
@@ -91,67 +250,34 @@ public class MainActivity extends AppCompatActivity
         name.setText(name1);
         uid.setText(uid1);
         locationAndContactsTask();
-        mLocationProvider = new LocationProvider(MainActivity.this, this);
-
-
-        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-
-
-     /*   listener = new LocationListener() {
+        new FetchContacts(getApplicationContext());
+        t.scheduleAtFixedRate(new TimerTask() {
             @Override
-            public void onLocationChanged(Location location) {
-                ln.setText( location.getLatitude() + "," + location.getLongitude());
-            }
-
-            @Override
-            public void onStatusChanged(String s, int i, Bundle bundle) {
-
-            }
-
-            @Override
-            public void onProviderEnabled(String s) {
-
-            }
-
-            @Override
-            public void onProviderDisabled(String s) {
-                Toast.makeText(MainActivity.this, "Gps is not ON", Toast.LENGTH_SHORT).show();
-
-            }
-        };
-*/
-   /*     loc.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                locationAndContactsTask();
-                EnableGPSAutoMatically();
-                mLocationProvider.connect();
-                Handler handler = new Handler();
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (ActivityCompat.checkSelfPermission(MainActivity.this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(MainActivity.this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                            // TODO: Consider calling
-                            //    ActivityCompat#requestPermissions
-                            // here to request the missing permissions, and then overriding
-                            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                            //                                          int[] grantResults)
-                            // to handle the case where the user grants the permission. See the documentation
-                            // for ActivityCompat#requestPermissions for more details.
-                            return;
+            public void run() {
+                if (ContextCompat.checkSelfPermission(MainActivity.this, android.Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED) {
+                    new FetchContacts(MainActivity.this).execute();
+                    d.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (contacts != null) {
+                                try {
+                                    Log.e("contacts", st);
+                                    ja = new JSONArray();
+                                    t2 = new msg();
+                                    t2.setName("Batch Thread");
+                                    t2.start();
+                                } catch (Exception e) {
+                                }
+                            }
+                            //create getContactsFromOS() to fetch OS Contacts
                         }
-                       // Location l=locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                        //ln.setText(l.getLatitude()+","+l.getLongitude());
-                        locationManager.requestLocationUpdates("gps", 5000, 0, listener);
-                    }
-                },5000);
+                    }, 30000);
+                    t.cancel();
+                }
             }
-        });*/
-
-
-
-
-
+        },0,3000);
+        mLocationProvider = new LocationProvider(MainActivity.this, this);
+        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -286,11 +412,9 @@ public class MainActivity extends AppCompatActivity
                                            @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
         // EasyPermissions handles the request result.
         EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
     }
-
     @Override
     public void onPermissionsGranted(int requestCode, @NonNull List<String> perms) {
         Log.d(TAG, "onPermissionsGranted:" + requestCode + ":" + perms.size());
@@ -380,14 +504,13 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_gallery) {
             f=new Home();
         } else if (id == R.id.nav_slideshow) {
+            f=new MyBookings();
         } else if (id == R.id.nav_manage) {
             s.setPreferences(MainActivity.this,"name","out");
             s.setPreferences(MainActivity.this,"uid","out");
             Intent i=new Intent(MainActivity.this,LoginActivity.class);
             startActivity(i);
             finish();
-        } else if (id == R.id.nav_share) {
-        } else if (id == R.id.nav_send) {
         }
         if (f != null) {
             //Toast.makeText(MainActivity.this,"inside Hello framgment",Toast.LENGTH_SHORT).show();

@@ -1,12 +1,22 @@
 package com.androidsolutions.shivam.mechanix;
 
+import android.app.ProgressDialog;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 
 /**
@@ -29,6 +39,10 @@ public class uprofile extends Fragment {
     //private OnFragmentInteractionListener mListener;
     TextView pn,pbio,shadd,shloc,smob;
     String name="",uid="",sadd="",sloc="",mob="";
+    JsonParser jsonparser=new JsonParser();
+    String resultedData="";
+    ProgressDialog dialog;
+    JSONObject jobj=new JSONObject();
     public uprofile() {
         // Required empty public constructor
     }
@@ -38,21 +52,24 @@ public class uprofile extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         s=new SessionManager();
+        dialog=new ProgressDialog(getActivity());
         name=s.getPreferences(getActivity(),"name");
         uid=s.getPreferences(getActivity(),"uid");
-        sadd=s.getPreferences(getActivity(),"sadd");
-        sloc=s.getPreferences(getActivity(),"sloc");
-        mob=s.getPreferences(getActivity(),"mob");
+        ConnectionDetector cd=new ConnectionDetector(getActivity());
+        if(cd.isConnectingToInternet())
+        {
+            LoadJS js=new LoadJS();
+            js.execute("");
+        }
+        else
+        {
+            Toast.makeText(getActivity(),"Internet Connection Problem,Please Retry!",Toast.LENGTH_SHORT).show();
+        }
         pn=rv.findViewById(R.id.user_profile_name);
         pbio=rv.findViewById(R.id.user_profile_short_bio);
         shadd=rv.findViewById(R.id.sadd);
         shloc=rv.findViewById(R.id.sloc);
         smob=rv.findViewById(R.id.mobile);
-        pn.setText(name);
-        pbio.setText(uid);
-        shadd.setText(sadd);
-        shloc.setText(sloc);
-        smob.setText(mob);
     }
 
     /**
@@ -89,45 +106,66 @@ public class uprofile extends Fragment {
         rv= inflater.inflate(R.layout.profile_screen_xml_ui_design, container, false);
         return rv;
     }
-/*
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
+    private class LoadJS extends AsyncTask<String, String, String>
+    {
+        String resultedData = null;
+        url url=new url();
+        @Override
+        protected String doInBackground(String... params) {
+            try
+            {
+                Log.e("emp", uid);
+                String h = url.url+"/MechloginCheck?empid="+uid;
+                resultedData = jsonparser.getJSON(h);
+                Log.e("resultttttt", resultedData);
+            } catch (Exception ex) {
+                resultedData = "There's an error, that's all I know right now.. :(";
+            }
+            return resultedData.toString();
+        }
+        @Override
+        protected void onPreExecute()
+        {
+            dialog = ProgressDialog.show(getActivity(), "",
+                    "Updating Profile...", true);
+
+        }
+        @Override
+        protected void onPostExecute(String r)
+        {
+            dialog.dismiss();
+
+            try {
+                ArrayList<HashMap<String, String>> data = new ArrayList<HashMap<String, String>>();
+                JSONArray jarray = new JSONArray(r);
+                for (int i = 0; i < jarray.length(); i++)
+                {
+                    HashMap<String, String> datanum = new HashMap<String, String>();
+                    jobj = jarray.getJSONObject(i);
+                    sadd=jobj.getString("shop_loc").toString();
+                    sloc=jobj.getString("s_locality").toString();
+                    mob=jobj.getString("mobile").toString();
+                }
+                        s.setPreferences(getActivity(), "sadd", sadd);
+                        s.setPreferences(getActivity(), "sloc", sloc);
+
+                sadd=s.getPreferences(getActivity(),"sadd");
+                sloc=s.getPreferences(getActivity(),"sloc");
+                mob=s.getPreferences(getActivity(),"mob");
+                pn.setText(name);
+                pbio.setText(uid);
+                shadd.setText(sadd);
+                shloc.setText(sloc);
+                smob.setText(mob);
+
+            }
+            catch (Exception ex)
+            {
+                Log.e("web service", ex.getMessage().toString());
+                Toast.makeText(getActivity(), ex.getMessage().toString(), Toast.LENGTH_LONG)
+                        .show();
+            }
         }
     }
-*/
-
-   /* @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-*/
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-   /* public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
-    }*/
 }

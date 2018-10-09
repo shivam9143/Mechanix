@@ -4,6 +4,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:fitsSystemWindows="true"
+    android:background="@drawable/bg"
     >
 
     <LinearLayout
@@ -23,7 +24,8 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="24dp"
-            android:text="Registration Details"
+            android:text="Registration"
+            android:textColor="@color/whiteColor"
             android:gravity="center"
             android:textSize="22dip"/>
         <!-- Email Label -->
@@ -31,6 +33,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:theme="@style/TextLabel"
             android:layout_marginBottom="8dp">
             <EditText android:id="@+id/uid"
                 android:layout_width="match_parent"
@@ -46,6 +49,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:theme="@style/TextLabel"
             android:layout_marginBottom="8dp">
             <EditText android:id="@+id/name"
                 android:layout_width="match_parent"
@@ -58,6 +62,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:theme="@style/TextLabel"
             android:layout_marginBottom="8dp">
             <EditText android:id="@+id/gender"
                 android:layout_width="match_parent"
@@ -71,6 +76,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:theme="@style/TextLabel"
             android:layout_marginBottom="8dp">
             <EditText android:id="@+id/yob"
                 android:layout_width="match_parent"
@@ -84,6 +90,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:theme="@style/TextLabel"
             android:layout_marginBottom="8dp">
             <EditText android:id="@+id/co"
                 android:layout_width="match_parent"
@@ -97,6 +104,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:theme="@style/TextLabel"
             android:layout_marginBottom="8dp">
             <EditText android:id="@+id/loc"
                 android:layout_width="match_parent"
@@ -118,6 +126,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:theme="@style/TextLabel"
             android:layout_marginBottom="8dp">
             <EditText android:id="@+id/dist"
                 android:layout_width="match_parent"
@@ -131,6 +140,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:theme="@style/TextLabel"
             android:layout_marginBottom="8dp">
             <EditText android:id="@+id/address"
                 android:layout_width="match_parent"
@@ -144,6 +154,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:theme="@style/TextLabel"
             android:layout_marginBottom="8dp">
             <EditText android:id="@+id/pc"
                 android:layout_width="match_parent"
@@ -156,6 +167,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:theme="@style/TextLabel"
             android:layout_marginBottom="8dp">
             <EditText android:id="@+id/dob"
                 android:layout_width="match_parent"
@@ -167,6 +179,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:theme="@style/TextLabel"
             android:layout_marginBottom="8dp">
             <EditText android:id="@+id/mob"
                 android:layout_width="match_parent"
@@ -178,6 +191,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:theme="@style/TextLabel"
             android:layout_marginBottom="8dp">
             <EditText android:id="@+id/pswd"
                 android:layout_width="match_parent"
@@ -189,6 +203,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:theme="@style/TextLabel"
             android:layout_marginBottom="8dp">
             <EditText android:id="@+id/cpswd"
                 android:layout_width="match_parent"
@@ -203,6 +218,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
+            android:background="@drawable/button_bg"
             android:layout_marginBottom="24dp"
             android:padding="12dp"
             android:text="Register!"/>

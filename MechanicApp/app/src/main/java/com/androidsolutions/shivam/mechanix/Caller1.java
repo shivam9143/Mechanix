@@ -10,17 +10,14 @@ public class Caller1 extends Thread{
     public CallSoap1 cs;
     public  JSONObject json;
 
-
     public void run(){
         try{
             cs=new CallSoap1();
             String resp=cs.Call(json);
-            submit.rslt=resp;
+            RegisterWoutScan.result=resp;
         }catch(Exception ex)
         {
-            submit.rslt="Helo Caller="+ex.getMessage().toString();
-
+            RegisterWoutScan.result="Helo Caller="+ex.getMessage().toString();
         }
-
     }
 }

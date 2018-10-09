@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:fillViewport="true"
+    android:layout_height="fill_parent"
+    >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:padding="15dp"
+        android:orientation="vertical"
+        android:layout_marginTop="10dp"
+        android:layout_gravity="center_horizontal"
+        >
+
+        <HorizontalScrollView
+
+            android:id="@+id/hsv1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@android:color/white"
+                android:weightSum="20" >
+
+
+
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:divider="?android:listDivider"
+                    android:dividerPadding="22dip"
+                    android:showDividers="middle"
+                    android:weightSum="20">
+
+                    <TextView
+                        android:layout_width="150dp"
+                        android:layout_height="50dp"
+                        android:layout_weight="1.5"
+                        android:background="#88aae0"
+                        android:gravity="center_horizontal|center_vertical"
+                        android:singleLine="false"
+                        android:maxLines="10"
+                        android:text="ID"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="150dp"
+                        android:layout_height="50dp"
+                        android:layout_weight="1.5"
+                        android:background="#88aae0"
+                        android:gravity="center_horizontal|center_vertical"
+                        android:singleLine="false"
+                        android:maxLines="10"
+                        android:text="Customer Name"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="150dp"
+                        android:layout_height="50dp"
+                        android:layout_weight="1.5"
+                        android:background="#88aae0"
+                        android:gravity="center_horizontal|center_vertical"
+                        android:singleLine="false"
+                        android:maxLines="10"
+                        android:text="Customer Mob"
+                        android:textStyle="bold" />
+
+
+                    <TextView
+                        android:layout_width="150dp"
+                        android:layout_height="50dp"
+                        android:layout_weight="1.5"
+                        android:background="#88aae0"
+                        android:gravity="center_horizontal|center_vertical"
+                        android:singleLine="false"
+                        android:maxLines="10"
+                        android:text="Mechanic Name"
+                        android:textStyle="bold" />
+
+
+
+
+                    <TextView
+                        android:layout_width="150dp"
+                        android:layout_height="50dp"
+                        android:layout_weight="1.5"
+                        android:background="#88aae0"
+                        android:gravity="center_horizontal|center_vertical"
+                        android:singleLine="false"
+                        android:maxLines="10"
+                        android:text="Mechanic ID"
+                        android:textStyle="bold" />
+                    <TextView
+                        android:layout_width="150dp"
+                        android:layout_height="50dp"
+                        android:layout_weight="1.5"
+                        android:background="#88aae0"
+                        android:gravity="center_horizontal|center_vertical"
+                        android:singleLine="false"
+                        android:maxLines="10"
+                        android:text="Mechanic Mob"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="150dp"
+                        android:layout_height="50dp"
+                        android:layout_weight="1.5"
+                        android:background="#88aae0"
+                        android:gravity="center_horizontal|center_vertical"
+                        android:singleLine="false"
+                        android:maxLines="10"
+                        android:text="Booking Status"
+                        android:textStyle="bold" />
+
+
+                    <TextView
+                        android:layout_width="150dp"
+                        android:layout_height="50dp"
+                        android:layout_weight="1.5"
+                        android:background="#88aae0"
+                        android:gravity="center_horizontal|center_vertical"
+                        android:singleLine="false"
+                        android:maxLines="10"
+                        android:text="Time"
+                        android:textStyle="bold" />
+
+
+                    <TextView
+                        android:layout_width="150dp"
+                        android:layout_height="50dp"
+                        android:layout_weight="1.5"
+                        android:background="#88aae0"
+                        android:gravity="center_horizontal|center_vertical"
+                        android:singleLine="false"
+                        android:maxLines="10"
+                        android:text="Confirm Booking"
+                        android:textStyle="bold" />
+
+
+                </LinearLayout>
+
+                <ListView
+                    android:id="@+id/servicerec"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:scrollbars="vertical"
+                    >
+                </ListView>
+            </LinearLayout>
+        </HorizontalScrollView>
+    </LinearLayout>
+</ScrollView>

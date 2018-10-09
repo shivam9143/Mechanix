@@ -2,12 +2,10 @@ package com.androidsolutions.shivam.mechanix;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
@@ -42,6 +40,7 @@ public class LoginActivity extends Activity
     EditText pwd;
     TextView txtRegister;
     TextView mktUrl;
+    int status=0;
     Spinner s;
     ProgressDialog dialog;
     ConnectionDetector cd;
@@ -66,12 +65,12 @@ public class LoginActivity extends Activity
         pwd=(EditText)findViewById(R.id.edit_Pwd);
         txtRegister=(TextView)findViewById(R.id.btnSignup);
         empid.setFilters(new InputFilter[] {new InputFilter.AllCaps()});
-        mktUrl=(TextView)findViewById(R.id.myImageViewText);
+       // mktUrl=(TextView)findViewById(R.id.myImageViewText);
         session2=new SessionManager();
         session3=new SessionManager();
         session=new SessionManager();
         session1=new SessionManager();
-        mktUrl.setOnClickListener(new OnClickListener()
+        /*mktUrl.setOnClickListener(new OnClickListener()
         {
             @Override
             public void onClick(View v)
@@ -87,7 +86,7 @@ public class LoginActivity extends Activity
                 }
 
             }
-        });
+        });*/
 
         txtRegister.setOnClickListener(new OnClickListener()
         {
@@ -183,6 +182,7 @@ public class LoginActivity extends Activity
                     shopadd=jobj.getString("shop_loc").toString();
                     shoploc=jobj.getString("s_locality").toString();
                     mob=jobj.getString("mobile").toString();
+                    status=Integer.parseInt(jobj.getString("status"));
                     Log.e("uid",uid1);
                     Log.e("name=",username);
                 }
@@ -200,12 +200,21 @@ public class LoginActivity extends Activity
                         session.setPreferences(LoginActivity.this, "sadd", shopadd);
                         session.setPreferences(LoginActivity.this, "sloc", shoploc);
                         session.setPreferences(LoginActivity.this, "mob", mob);
-
-                        Intent i = new Intent(LoginActivity.this, MainActivity.class);
-                        startActivity(i);
+                        session.setPreferences(LoginActivity.this, "status", status+"");
+                        if(status==1)
+                        {
+                            Intent i = new Intent(LoginActivity.this, MainActivity.class);
+                            startActivity(i);
+                        }
+                        else if(status==0)
+                        {
+                            Intent i = new Intent(LoginActivity.this, Verification.class);
+                            startActivity(i);
+                        }
                         pwd.setText("");
                         empid.setText("");
                         finish();
+
                     }
                     else
                     {
@@ -217,7 +226,7 @@ public class LoginActivity extends Activity
             catch (Exception ex)
             {
                 Log.e("web service", ex.getMessage().toString());
-                Toast.makeText(LoginActivity.this, ex.getMessage().toString(), Toast.LENGTH_LONG)
+                Toast.makeText(LoginActivity.this, "Internet Connectivity Issue", Toast.LENGTH_LONG)
                         .show();
             }
         }
@@ -229,7 +238,7 @@ public class LoginActivity extends Activity
 
         builder.setMessage(scanContent)
                 .setTitle("Result");
-        builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 // Toast.makeText(UserRegistration.this, "Saved", Toast.LENGTH_SHORT).show();
 

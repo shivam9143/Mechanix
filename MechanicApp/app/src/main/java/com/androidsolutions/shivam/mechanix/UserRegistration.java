@@ -2,6 +2,7 @@ package com.androidsolutions.shivam.mechanix;
 
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -32,6 +33,7 @@ public class UserRegistration extends AppCompatActivity
     JSONObject jresult=new JSONObject();
     ConnectionDetector cd;
     Boolean isInternetPresent;
+    String uid1="",name1="",mmob1="",otp1="",amob="";
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -103,6 +105,16 @@ public class UserRegistration extends AppCompatActivity
                 else {
                     job = new JSONObject();
                     try {
+                        uid1=newCard.uid;
+                        name1=newCard.name;
+                        mmob1=mob.getText().toString();
+                        StringBuilder sb=new StringBuilder();
+                        sb.append(uid1.substring(3,6));
+                        sb.append(mmob1.substring(3,5));
+                        int r=(int)(Math.random()*((99-0)+1))+0;
+                        sb.append(r);
+                        otp1=new String(sb);
+                        amob="7897175787";
                         job.put("uid", newCard.uid);
                         job.put("name", newCard.name);
                         job.put("gender", newCard.gender);
@@ -114,6 +126,8 @@ public class UserRegistration extends AppCompatActivity
                         job.put("pc", newCard.pincode);
                         job.put("dob", newCard.dob);
                         job.put("mob", mob.getText().toString());
+                        job.put("otp",otp1);
+                        job.put("amob",amob);
                         if (!pswd.getText().toString().equals(cpswd.getText().toString())) {
                             pswd.setError("Passwords do not match, Please re-enter!");
                             pswd.setText("");
@@ -139,13 +153,27 @@ public class UserRegistration extends AppCompatActivity
 
         builder.setMessage(scanContent)
                 .setTitle("Result");
-        builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-               // Toast.makeText(UserRegistration.this, "Saved", Toast.LENGTH_SHORT).show();
+        if(scanContent.equals("Registration Successful"))
+        {
+            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    // Toast.makeText(UserRegistration.this, "Saved", Toast.LENGTH_SHORT).show();
+                    Intent i=new Intent(UserRegistration.this,LoginActivity.class);
+                    startActivity(i);
+                }
+            });
+        }
+        else
+        {
+            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    // Toast.makeText(UserRegistration.this, "Saved", Toast.LENGTH_SHORT).show();
+               /*     Intent i=new Intent(UserRegistration.this,LoginActivity.class);
+                    startActivity(i);*/
+                }
+            });
+        }
 
-
-            }
-        });
        /* builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 Toast.makeText(UserRegistration.this, "Not Saved", Toast.LENGTH_SHORT).show();
@@ -182,7 +210,7 @@ public class UserRegistration extends AppCompatActivity
             }
             else {
                 showAlertDialog(
-                        "Submitted Successfully");
+                        "Registration Successful");
             }
         }
         catch(Exception ex)
